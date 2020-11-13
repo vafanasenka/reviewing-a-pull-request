@@ -1,3 +1,13 @@
+--get docusign doc
+SELECT *
+FROM 
+DocumentManagement..TDocVersion dv with (nolock)
+join DocumentManagement..TDocument td with (nolock) on dv.DocumentId = td.DocumentId
+join [docusign].[dbo].[TDocument] docusign with (nolock) on td.DocumentId = docusign.DocumentId
+--join crm..TCrmContact sender on docusign.SenderId = sender.CRMContactId
+--join crm..TCRMContact signer on docusign.SignerId = signer.CRMContactId
+
+where SentOn >= '2020-11-06 22:24:00.000'
 
 
 
@@ -7,34 +17,34 @@
 Get Plans with inconsistency owners
 
 
-select 
-    PlanId
-    ,TenantId
-    ,pmpo.CRMContactId as 'TPolicyOwner CRMContactId'
-    ,sdbpl.Owner1Id as 'sdb Plan Owner1Id'
-    ,sdbpl.Owner2Id as 'sdb Plan Owner2Id'
-    ,PlanTypeId
-    ,PlanTypeValue
-    ,PlanCategoryId
-    ,PlanCategoryValue
-    ,ProviderId
-    ,SellingAdviserId
-    ,IOBRef
-    ,StatusId
-    ,StatusValue
-    ,PlanAdviceTypeId
-    ,PlanAdviceTypeValue
-    ,PortfolioPlanCategoryId
-    ,PortfolioPlanCategoryValue
-    ,PortfolioPlanSubCategoryId
-    ,PortfolioPlanSubCategoryValue
-    ,Deleted
-    ,WhoCreatedUserId
+selectÂ 
+Â  Â  PlanId
+Â  Â  ,TenantId
+Â  Â  ,pmpo.CRMContactId as 'TPolicyOwner CRMContactId'
+Â  Â  ,sdbpl.Owner1Id as 'sdb Plan Owner1Id'
+Â  Â  ,sdbpl.Owner2Id as 'sdb Plan Owner2Id'
+Â  Â  ,PlanTypeId
+Â  Â  ,PlanTypeValue
+Â  Â  ,PlanCategoryId
+Â  Â  ,PlanCategoryValue
+Â  Â  ,ProviderId
+Â  Â  ,SellingAdviserId
+Â  Â  ,IOBRef
+Â  Â  ,StatusId
+Â  Â  ,StatusValue
+Â  Â  ,PlanAdviceTypeId
+Â  Â  ,PlanAdviceTypeValue
+Â  Â  ,PortfolioPlanCategoryId
+Â  Â  ,PortfolioPlanCategoryValue
+Â  Â  ,PortfolioPlanSubCategoryId
+Â  Â  ,PortfolioPlanSubCategoryValue
+Â  Â  ,Deleted
+Â  Â  ,WhoCreatedUserId
 from [sdb].[dbo].[Plan] sdbpl
-    inner join [policymanagement].[dbo].[TPolicyBusiness] pmpb on sdbpl.PlanId = pmpb.PolicyBusinessId
-    inner join [policymanagement].[dbo].[TPolicyOwner] pmpo on pmpb.PolicyDetailId = pmpo.PolicyDetailId
+Â  Â  inner join [policymanagement].[dbo].[TPolicyBusiness] pmpb on sdbpl.PlanId = pmpb.PolicyBusinessId
+Â  Â  inner join [policymanagement].[dbo].[TPolicyOwner] pmpo on pmpb.PolicyDetailId = pmpo.PolicyDetailId
 where sdbpl.Owner1Id <> pmpo.CRMContactId
-    and sdbpl.Owner2Id <> pmpo.CRMContactId
+Â  Â  and sdbpl.Owner2Id <> pmpo.CRMContactId
 
 
 
@@ -47,13 +57,13 @@ PLAN OWNERS
 
 
 
-declare @AdviserId int = 24890678    ----6181653
-declare @ClientId int = 25362330     ----6180654
-declare @PlanId int = 43936720          ----5070
+declare @AdviserId int = 24890678 Â  Â ----6181653
+declare @ClientId int = 25362330 Â  Â  ----6180654
+declare @PlanId int = 43936720 Â  Â  Â  Â  Â ----5070
 
 create table #tempClients
 (
-    CRMContactId int
+Â  Â  CRMContactId int
 )
 
 insert into #tempClients
@@ -64,88 +74,88 @@ select @ClientId
 insert into #tempClients
 select CRMContactFromId
 FROM [crm].[dbo].[TRelationship] r
-  where r.IsPartnerFg = 1
-  and (r.CRMContactFromId = @ClientId or r.CRMContactToId = @ClientId) 
+Â  where r.IsPartnerFg = 1
+Â  and (r.CRMContactFromId = @ClientId or r.CRMContactToId = @ClientId)Â 
 
 
 --RELATIONSHIPS
 SELECT TOP (1000)
-    case when r.CRMContactFromId = @ClientId then 'from Client'
-    else case when r.CRMContactToId = @ClientId then 'to Client'
-    else 'Unknown' end end as 'RELATIONSHIP',
-        [RelationshipId]
-      ,[CRMContactFromId]
-      ,[CRMContactToId]
-      ,[IsPartnerFg]
-      ,[IsFamilyFg]
-      ,[IsPointOfContactFg]
-      ,[IncludeInPfp]
-      ,[ReceivedAccessType]
-      ,[ReceivedAccessAt]
-      ,[ReceivedAccessByUserId]
-      ,[GivenAccessType]
-      ,[GivenAccessAt]
-      ,[GivenAccessByUserId]
-  FROM [crm].[dbo].[TRelationship] r
-  where r.IsPartnerFg = 1
-  and (r.CRMContactFromId = @ClientId or r.CRMContactToId = @ClientId)
+Â  Â  case when r.CRMContactFromId = @ClientId then 'from Client'
+Â  Â  else case when r.CRMContactToId = @ClientId then 'to Client'
+Â  Â  else 'Unknown' end end as 'RELATIONSHIP',
+Â  Â  Â  Â  [RelationshipId]
+Â  Â  Â  ,[CRMContactFromId]
+Â  Â  Â  ,[CRMContactToId]
+Â  Â  Â  ,[IsPartnerFg]
+Â  Â  Â  ,[IsFamilyFg]
+Â  Â  Â  ,[IsPointOfContactFg]
+Â  Â  Â  ,[IncludeInPfp]
+Â  Â  Â  ,[ReceivedAccessType]
+Â  Â  Â  ,[ReceivedAccessAt]
+Â  Â  Â  ,[ReceivedAccessByUserId]
+Â  Â  Â  ,[GivenAccessType]
+Â  Â  Â  ,[GivenAccessAt]
+Â  Â  Â  ,[GivenAccessByUserId]
+Â  FROM [crm].[dbo].[TRelationship] r
+Â  where r.IsPartnerFg = 1
+Â  and (r.CRMContactFromId = @ClientId or r.CRMContactToId = @ClientId)
 
 --USERS INFO
 SELECT
-    case when u.CRMContactId = @AdviserId then 'Adviser'
-    else 'Client' end as 'USER INFO',
-    c.PersonId, c.FirstName, c.LastName, u.CRMContactId, u.UserId, u.Identifier,
-    a.AccountId, u.Email, u.groupId, a.Username, c.CurrentAdviserCRMId, c.CurrentAdviserName,
-    rut.Identifier, u.RefUserTypeId
-FROM  Crm..TCrmContact c
-    JOIN Administration..TUser u on u.CRMContactId = c.CRMContactId
-    JOIN Membership..TAccount a on a.Subject = u.Guid
-    JOIN Administration..TRefUserType rut on rut.RefUserTypeId = u.RefUserTypeId
+Â  Â  case when u.CRMContactId = @AdviserId then 'Adviser'
+Â  Â  else 'Client' end as 'USER INFO',
+Â  Â  c.PersonId, c.FirstName, c.LastName, u.CRMContactId, u.UserId, u.Identifier,
+Â  Â  a.AccountId, u.Email, u.groupId, a.Username, c.CurrentAdviserCRMId, c.CurrentAdviserName,
+Â  Â  rut.Identifier, u.RefUserTypeId
+FROM Â Crm..TCrmContact c
+Â  Â  JOIN Administration..TUser u on u.CRMContactId = c.CRMContactId
+Â  Â  JOIN Membership..TAccount a on a.Subject = u.Guid
+Â  Â  JOIN Administration..TRefUserType rut on rut.RefUserTypeId = u.RefUserTypeId
 WHERE c.CRMContactId in (select * from #tempClients)
 
 --RELATIONSHIPS KEYS
-  select
-  case
-    when k.EntityId = @ClientId then 'to Client'
-    else 'from Client to ->'
-  end as 'KEY FOUND',
-  c.FirstName + ' ' + c.LastName as 'Name',
-  k.*
-  from [crm].[dbo].[TCRMContactKey] k
-    join Crm..TCrmContact c on k.EntityId = c.CRMContactId
-  where EntityId in (select * from #tempClients)
+Â  select
+Â  case
+Â  Â  when k.EntityId = @ClientId then 'to Client'
+Â  Â  else 'from Client to ->'
+Â  end as 'KEY FOUND',
+Â  c.FirstName + ' ' + c.LastName as 'Name',
+Â  k.*
+Â  from [crm].[dbo].[TCRMContactKey] k
+Â  Â  join Crm..TCrmContact c on k.EntityId = c.CRMContactId
+Â  where EntityId in (select * from #tempClients)
 
 --PLAN OWNERS
 SELECT TOP (1000)
-        po.[CRMContactId] as 'Owner CRMContactId'
-      ,case when po.CRMContactId = @ClientId then 'Client owner'
-      else 'Partner owner' end as 'OWNER',
-        tb.[PolicyBusinessId]
-      ,tb.[PolicyDetailId]
-      ,[PolicyNumber]
-      ,[PractitionerId]
-      ,[AdviceTypeId]
-      ,[PolicyStartDate]
-      ,[BaseCurrency]
-      --,[PlanValue]
-      --,[PlanValueDate]
-      --,[WhoUpdatedValue]
-      --,[WhoUpdatedDateTime]
-      ,mo.*
-      ,inc.*
-      ,mi.*
-      ,ex.*
-  FROM [policymanagement].[dbo].[TPolicyBusiness] tb
-  --inner join [policymanagement].[dbo].[TPolicyBusinessExt] ext on tb.PolicyBusinessId = ext.PolicyBusinessId
-  --left join [policymanagement].[dbo].[TPlanValuation] pv on tb.PolicyBusinessId = pv.PolicyBusinessId
-  join [policymanagement].[dbo].[TPolicyOwner] po on tb.PolicyDetailId = po.PolicyDetailId
-  left join [policymanagement].[dbo].[TPolicyMoneyOut] mo on tb.PolicyBusinessId = mo.PolicyBusinessId
-  left join [factfind].[dbo].[TDetailedincomebreakdown] inc on tb.PolicyBusinessId = inc.PolicyBusinessId
-  left join [policymanagement].[dbo].[TPolicyMoneyIn] mi on tb.PolicyBusinessId = mi.PolicyBusinessId
-  left join [factfind].[dbo].[TExpenditureDetail] ex on tb.PolicyBusinessId = ex.PolicyBusinessId
-  where tb.PolicyBusinessId = @PlanId
-  
-SELECT 
+Â  Â  Â  Â  po.[CRMContactId] as 'Owner CRMContactId'
+Â  Â  Â  ,case when po.CRMContactId = @ClientId then 'Client owner'
+Â  Â  Â  else 'Partner owner' end as 'OWNER',
+Â  Â  Â  Â  tb.[PolicyBusinessId]
+Â  Â  Â  ,tb.[PolicyDetailId]
+Â  Â  Â  ,[PolicyNumber]
+Â  Â  Â  ,[PractitionerId]
+Â  Â  Â  ,[AdviceTypeId]
+Â  Â  Â  ,[PolicyStartDate]
+Â  Â  Â  ,[BaseCurrency]
+Â  Â  Â  --,[PlanValue]
+Â  Â  Â  --,[PlanValueDate]
+Â  Â  Â  --,[WhoUpdatedValue]
+Â  Â  Â  --,[WhoUpdatedDateTime]
+Â  Â  Â  ,mo.*
+Â  Â  Â  ,inc.*
+Â  Â  Â  ,mi.*
+Â  Â  Â  ,ex.*
+Â  FROM [policymanagement].[dbo].[TPolicyBusiness] tb
+Â  --inner join [policymanagement].[dbo].[TPolicyBusinessExt] ext on tb.PolicyBusinessId = ext.PolicyBusinessId
+Â  --left join [policymanagement].[dbo].[TPlanValuation] pv on tb.PolicyBusinessId = pv.PolicyBusinessId
+Â  join [policymanagement].[dbo].[TPolicyOwner] po on tb.PolicyDetailId = po.PolicyDetailId
+Â  left join [policymanagement].[dbo].[TPolicyMoneyOut] mo on tb.PolicyBusinessId = mo.PolicyBusinessId
+Â  left join [factfind].[dbo].[TDetailedincomebreakdown] inc on tb.PolicyBusinessId = inc.PolicyBusinessId
+Â  left join [policymanagement].[dbo].[TPolicyMoneyIn] mi on tb.PolicyBusinessId = mi.PolicyBusinessId
+Â  left join [factfind].[dbo].[TExpenditureDetail] ex on tb.PolicyBusinessId = ex.PolicyBusinessId
+Â  where tb.PolicyBusinessId = @PlanId
+Â Â 
+SELECTÂ 
 p.Owner1Id,
 p.Owner2Id,
 p.Owner3Id,
@@ -161,7 +171,7 @@ where PlanId = @PlanId
 
 If(OBJECT_ID('tempdb..#tempClients') Is Not Null)
 Begin
-    Drop Table #tempClients
+Â  Â  Drop Table #tempClients
 End
 
 
@@ -1063,7 +1073,7 @@ order by DateCreated desc
 
 
 
-TenantID: 11572 
+TenantID: 11572Â 
 
 client (11833989-13008934)
 
@@ -1074,13 +1084,13 @@ one is PDF and one is Word
 
 
 
-ExplicitConsentDirectMarketing_v318426_20180618123819.docx is 
-Production Unsigned and shared. 18/06/2018 12:39:02 
+ExplicitConsentDirectMarketing_v318426_20180618123819.docx isÂ 
+Production Unsigned and shared. 18/06/2018 12:39:02Â 
 
 
 
 
-ExplicitConsentDirectMarketing_v318426_20180618123819.pdf is production signed and not shared. 19/06/2018 00:04:11 
+ExplicitConsentDirectMarketing_v318426_20180618123819.pdf is production signed and not shared. 19/06/2018 00:04:11Â 
 You cannot open this one
 
 
@@ -1414,7 +1424,7 @@ where TenantId = 793
 
 
 
-***** 
+*****Â 
 
 check USer's email and contacts
 
@@ -1489,8 +1499,8 @@ SELECT DV.DocumentId, DV.CreatedDate, DV.LastUpdatedDate, DV.LastUserId, DV.Stat
 DV.OriginalFileName, DV.PfpDocumentId, TD.Identifier, TD.Descriptor, TD.OriginalFileName,
 TD.EntityId, TD.EntityDescriptor, TD.ConcurrencyId, TD.IsESignature, TD.IsPrivate
 
-FROM [documentmanagement].[dbo].[TDocVersion] DV WITH (NOLOCK)  inner join [documentmanagement].[dbo].[TDocument] TD WITH (NOLOCK) on DV.DocumentId = TD.DocumentId
-where 
+FROM [documentmanagement].[dbo].[TDocVersion] DV WITH (NOLOCK)Â  inner join [documentmanagement].[dbo].[TDocument] TD WITH (NOLOCK) on DV.DocumentId = TD.DocumentId
+whereÂ 
 DV.IndigoClientId = 12698
 and
 TD.OriginalFileName in ('FactFindElectronicAgreement_v359651_20181219143539_certificate.pdf',
@@ -1656,15 +1666,15 @@ where CompanyReference like '153051'
 ///////////////////////////////
 
 
-> Go to https://mynestegg.mypfp.co.uk/planningandadvice
+> Go toÂ https://mynestegg.mypfp.co.uk/planningandadvice
 > Accept conditions and press tick boxes
-> Start Planning 
+> Start PlanningÂ 
 > Logs in as existing iO Client and PFP User
 > Completes Journey up until the point of adding details
 
-Gets stuck on the 'confirm your details page' (Screenshot attached). 
+Gets stuck on the 'confirm your details page' (Screenshot attached).Â 
 
-The client in iO is 
+The client in iO isÂ 
 (18702844-25648117)
 
 
@@ -1681,10 +1691,10 @@ SessionId=a88d63c2-3989-4e08-9f49-82bd58a3af89
 
 AccountIds which produces errors for the Client
 
-[accounts].[dbo].[TAccount] 
+[accounts].[dbo].[TAccount]Â 
 
-397427 Hargreaves Lansdown (UK) LinkedPlanId=44041597
-332354 Nutmeg (UK) LinkedPlanId=41488214
+397427Â Hargreaves Lansdown (UK) LinkedPlanId=44041597
+332354Â Nutmeg (UK) LinkedPlanId=41488214
 
 Container='InvestmentAccount'
 
@@ -1801,9 +1811,9 @@ or ParentPlanId = 44041597
 
 
 
-There is Plan with PlanId = 44041597 into [sdb].[dbo].[plan]
+There is Plan withÂ PlanId = 44041597 intoÂ [sdb].[dbo].[plan]
 
-There is NO Plan with PlanId = 43197545 !!! Can't see details because of it?
+There is NO Plan withÂ PlanId = 43197545Â !!! Can't see details because of it?
 
 
 
@@ -1820,9 +1830,9 @@ where
 
 
 
-There is Plan with PlanId = 44041597 into [PolicyManagement].[dbo].[TPolicyBusiness]
+There is Plan withÂ PlanId = 44041597 intoÂ [PolicyManagement].[dbo].[TPolicyBusiness]
 
-so there is Plan with PlanId = 43197545
+so there is Plan withÂ PlanId = 43197545
 
 
 
@@ -1912,7 +1922,7 @@ if status is 'Sent' - doc is active and reminder will be sent according to Remin
 
 
 
-3. [docusign]
+3.Â [docusign]
 
 SELECT TOP (1000) [Id] ,[RemindAfter] ,[RemindEvery] ,[ExpireIn] ,[RemindBeforeExpiration] ,[DocumentId]
 FROM [docusign].[dbo].[TRemindersAndExpirationSettings]
@@ -1923,7 +1933,7 @@ can calculate if the reminder still active (SentOn field from docusign + ExpireI
 
 
 
- 4. [schedulerps]
+Â 4.Â [schedulerps]
 
 SELECT TOP (1000) * FROM [schedulerps].[dbo].[PS_TRIGGERS] where TRIGGER_NAME like '%8892'
 SELECT TOP (1000) * FROM [schedulerps].[dbo].[PS_SIMPLE_TRIGGERS] where TRIGGER_NAME like '%8892'
