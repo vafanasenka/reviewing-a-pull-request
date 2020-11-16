@@ -1,3 +1,17 @@
+
+--ticket data
+lawrencebyrne@virginmedia.com
+sent messages Ids:
+2068003
+2071032
+2071964
+2080920
+2082306
+2101925
+2106981
+
+
+
 Email text
 Hi Laurie    As discussed, please find attached various documents relating to the proposed pension contribution.    Most importantly, please see the payment instructions which give Novia’s bank details for the payment. Please quote your Novia investor number, 219844 on the payment.    Please keep the Key Features Illustration for your records. This illustration also details the recommended investments and all associated charges, including the Initial Advice Charge of £380 which is to cover our costs in providing and implementing this advice. This is equivalent of 1.9% and falls within the remit of your agreed Service Charter.    I can confirm that I am recommending the same investment portfolio as that being used in your Novia ISA.    In due course please could you complete and sign the Novia Nomination/Expression of Wish form and sign and return the Novia SIPP application summary. These can be returned electronically if easier.    Whilst writing, I can confirm that we are processing your GIA to ISA transfer today further to your earlier message to proceed with this advice.    Please do come back to me to clarify or ask anything on these matters.    Kind regards    Frank  
 
