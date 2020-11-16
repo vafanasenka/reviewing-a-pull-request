@@ -84,3 +84,38 @@ and
 (
 c.CRMContactId = 25562990
 or c.CRMContactId = 12654941)
+
+-- contact and audit
+
+SELECT *
+  FROM [CRM].[dbo].[TContactAudit] c
+  where 
+c.CRMContactId in (25562990, 12654941)
+
+SELECT *
+  FROM [CRM].[dbo].[TContact] c
+  where (
+c.CRMContactId = 25562990
+or c.CRMContactId = 12654941)
+
+SELECT *
+  FROM [Membership].[dbo].[TAccount]
+  where Email in ('frank.harewood@avtrinity.com', 'lawrencebyrne@virginmedia.com')
+
+  SELECT *
+  FROM [Membership].[dbo].[TEmail]
+  where TenantId = 752
+  and UserId in (72079,416273)
+  
+ --emails
+ SELECT *
+  FROM [email].[dbo].[TEmailDelivery]
+  where Recipients in ('frank.harewood@avtrinity.com', 'lawrencebyrne@virginmedia.com')
+
+SELECT *
+  FROM [email].[dbo].[TEmailRecipient]
+  where EmailAddress in ('frank.harewood@avtrinity.com', 'lawrencebyrne@virginmedia.com')
+
+SELECT *
+  FROM [email].[dbo].[TEmailSent]
+  where Destination in ('frank.harewood@avtrinity.com', 'lawrencebyrne@virginmedia.com')
