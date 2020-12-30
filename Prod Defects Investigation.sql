@@ -3,43 +3,50 @@
 DECLARE @FeesToBeUpdated TABLE
 (
 ISIN NVARCHAR(20)
+,Num INT
 );
-INSERT INTO @FeesToBeUpdated (ISIN)
-VALUES   ('GB00B2PB2C75')
-,('GB00B2PB3794')
-,('GB00B2PB2M73')
-,('GB00B2PB2168')
-,('GB00BVYPGT82');
-SELECT * FROM TFund fund
+INSERT INTO @FeesToBeUpdated (ISIN, Num)
+VALUES   ('GB00B2PB2C75',1)
+,('GB00B2PB3794',2)
+,('GB00B2PB2M73',3)
+,('GB00B2PB2168',4)
+,('GB00BVYPGT82',5);
+SELECT
+fund.ProviderId, fund.Name, fund.ISIN, fund.OngoingChargeFee
+FROM TFund fund
 JOIN @FeesToBeUpdated ftbu ON ftbu.ISIN = fund.ISIN
 WHERE IsArchived <> 1 
+ORDER BY ftbu.Num
 
-DECLARE @CostsToBeUpdated TABLE
+ DECLARE @CostsToBeUpdated TABLE
 (
 ISIN NVARCHAR(20)
+,Num INT
 );
-INSERT INTO @CostsToBeUpdated (ISIN)
+INSERT INTO @CostsToBeUpdated (ISIN, Num)
 VALUES  -- Vanguard TxCs
-('GB00B4NXY349')
-,('GB00B3ZHN960')
-,('GB00B3TYHH97')
-,('GB00B4PQW151')
-,('GB00B41XG308')
+('GB00B4NXY349',1)
+,('GB00B3ZHN960',2)
+,('GB00B3TYHH97',3)
+,('GB00B4PQW151',4)
+,('GB00B41XG308',5)
 -- Update SEI TxCs
-,('IE00BYV1R427')
-,('IE00BYV1R534')
-,('IE00BYV1R641')
-,('IE00BYV1R757')
-,('IE00BYV1R971')
+,('IE00BYV1R427',6)
+,('IE00BYV1R534',7)
+,('IE00BYV1R641',8)
+,('IE00BYV1R757',9)
+,('IE00BYV1R971',10)
 -- Update LGIM TxCs
-,('GB00BH6XZ621')
-,('GB00BH6XZ845')
-,('GB00BH6XZB70')
-,('GB00BH6XZD94')
-,('GB00BH6XZG26');
-SELECT * FROM TFund fund
+,('GB00BH6XZ621',11)
+,('GB00BH6XZ845',12)
+,('GB00BH6XZB70',13)
+,('GB00BH6XZD94',14)
+,('GB00BH6XZG26',15);
+SELECT fund.ProviderId, fund.Name, fund.ISIN, fund.TransactionCosts
+FROM TFund fund
 JOIN @CostsToBeUpdated ctbu ON ctbu.ISIN = fund.ISIN
 WHERE IsArchived <> 1
+ORDER BY ctbu.Num
 
 
 --get docusign doc
