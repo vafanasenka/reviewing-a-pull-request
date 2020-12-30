@@ -1,3 +1,47 @@
+--AA get fund by ISIN
+
+DECLARE @FeesToBeUpdated TABLE
+(
+ISIN NVARCHAR(20)
+);
+INSERT INTO @FeesToBeUpdated (ISIN)
+VALUES   ('GB00B2PB2C75')
+,('GB00B2PB3794')
+,('GB00B2PB2M73')
+,('GB00B2PB2168')
+,('GB00BVYPGT82');
+SELECT * FROM TFund fund
+JOIN @FeesToBeUpdated ftbu ON ftbu.ISIN = fund.ISIN
+WHERE IsArchived <> 1 
+
+DECLARE @CostsToBeUpdated TABLE
+(
+ISIN NVARCHAR(20)
+);
+INSERT INTO @CostsToBeUpdated (ISIN)
+VALUES  -- Vanguard TxCs
+('GB00B4NXY349')
+,('GB00B3ZHN960')
+,('GB00B3TYHH97')
+,('GB00B4PQW151')
+,('GB00B41XG308')
+-- Update SEI TxCs
+,('IE00BYV1R427')
+,('IE00BYV1R534')
+,('IE00BYV1R641')
+,('IE00BYV1R757')
+,('IE00BYV1R971')
+-- Update LGIM TxCs
+,('GB00BH6XZ621')
+,('GB00BH6XZ845')
+,('GB00BH6XZB70')
+,('GB00BH6XZD94')
+,('GB00BH6XZG26');
+SELECT * FROM TFund fund
+JOIN @CostsToBeUpdated ctbu ON ctbu.ISIN = fund.ISIN
+WHERE IsArchived <> 1
+
+
 --get docusign doc
 SELECT *
 FROM 
