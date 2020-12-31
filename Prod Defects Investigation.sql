@@ -31,6 +31,8 @@ Navigate to Client 26967106-29653323
 See the message Time and date: 07/12/2020 08:56
 Subject Junior ISA payments
 The user and client wish to have this deleted from the system. It has been sent from the client.
+declare @SentId int = 2393107,
+@ReceivedId int = 2393114
 
 DECLARE @FeesToBeUpdated TABLE
 (
