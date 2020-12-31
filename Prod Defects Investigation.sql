@@ -1,5 +1,14 @@
 --AA get fund by ISIN
 
+--check isin
+IE00BYV1R864
+
+--secure message ticket:
+Navigate to Client 26967106-29653323
+See the message Time and date: 07/12/2020 08:56
+Subject Junior ISA payments
+The user and client wish to have this deleted from the system. It has been sent from the client.
+
 DECLARE @FeesToBeUpdated TABLE
 (
 ISIN NVARCHAR(20)
