@@ -34,6 +34,8 @@ The user and client wish to have this deleted from the system. It has been sent 
 declare @SentId int = 2393107,
 @ReceivedId int = 2393114
 
+
+USE [simpleadviceaegon]
 DECLARE @FeesToBeUpdated TABLE
 (
 ISIN NVARCHAR(20)
@@ -69,13 +71,14 @@ VALUES  -- Vanguard TxCs
 ,('IE00BYV1R534',7)
 ,('IE00BYV1R641',8)
 ,('IE00BYV1R757',9)
-,('IE00BYV1R971',10)
+,('IE00BYV1R864',10)
+,('IE00BYV1R971',11)
 -- Update LGIM TxCs
-,('GB00BH6XZ621',11)
-,('GB00BH6XZ845',12)
-,('GB00BH6XZB70',13)
-,('GB00BH6XZD94',14)
-,('GB00BH6XZG26',15);
+,('GB00BH6XZ621',12)
+,('GB00BH6XZ845',13)
+,('GB00BH6XZB70',14)
+,('GB00BH6XZD94',15)
+,('GB00BH6XZG26',16);
 SELECT fund.ProviderId, fund.Name, fund.ISIN, fund.TransactionCosts
 FROM TFund fund
 JOIN @CostsToBeUpdated ctbu ON ctbu.ISIN = fund.ISIN
