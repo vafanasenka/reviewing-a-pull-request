@@ -1,39 +1,4 @@
---check SEI funds
-DECLARE @CostsToBeUpdated TABLE
-(
-ISIN NVARCHAR(20)
-,Num INT
-);
-INSERT INTO @CostsToBeUpdated (ISIN, Num)
-VALUES
-('IE00BYV1R427',1)
-,('IE00BYV1R534',2)
-,('IE00BYV1R641',3)
-,('IE00BYV1R757',4)
-,('IE00BYV1R864',5)
-,('IE00BYV1R971',6)
-
-SELECT pr.Name, fund.Name, fund.ISIN, fund.TransactionCosts
-FROM TFund fund
-JOIN TProvider pr ON fund.ProviderId = pr.ProviderId
-JOIN @CostsToBeUpdated ctbu ON ctbu.ISIN = fund.ISIN
-WHERE IsArchived <> 1 AND pr.Name like 'SEI'
-ORDER BY ctbu.Num
-
-
---AA get fund by ISIN
-
---check isin
-IE00BYV1R864
-
---secure message ticket:
-Navigate to Client 26967106-29653323
-See the message Time and date: 07/12/2020 08:56
-Subject Junior ISA payments
-The user and client wish to have this deleted from the system. It has been sent from the client.
-declare @SentId int = 2393107,
-@ReceivedId int = 2393114
-
+--check TxCs
 
 USE [simpleadviceaegon]
 DECLARE @FeesToBeUpdated TABLE
@@ -48,8 +13,9 @@ VALUES   ('GB00B2PB2C75',1)
 ,('GB00B2PB2168',4)
 ,('GB00BVYPGT82',5);
 SELECT
-fund.ProviderId, fund.Name, fund.ISIN, fund.OngoingChargeFee
+pr.Name, fund.Name, fund.ISIN, fund.OngoingChargeFee, fund.UpdatedOn
 FROM TFund fund
+JOIN TProvider pr ON fund.ProviderId = pr.ProviderId
 JOIN @FeesToBeUpdated ftbu ON ftbu.ISIN = fund.ISIN
 WHERE IsArchived <> 1 
 ORDER BY ftbu.Num
@@ -79,11 +45,23 @@ VALUES  -- Vanguard TxCs
 ,('GB00BH6XZB70',14)
 ,('GB00BH6XZD94',15)
 ,('GB00BH6XZG26',16);
-SELECT fund.ProviderId, fund.Name, fund.ISIN, fund.TransactionCosts
+SELECT pr.Name, fund.Name, fund.ISIN, fund.TransactionCosts, fund.UpdatedOn
 FROM TFund fund
+JOIN TProvider pr ON fund.ProviderId = pr.ProviderId
 JOIN @CostsToBeUpdated ctbu ON ctbu.ISIN = fund.ISIN
 WHERE IsArchived <> 1
 ORDER BY ctbu.Num
+
+
+
+--secure message ticket:
+Navigate to Client 26967106-29653323
+See the message Time and date: 07/12/2020 08:56
+Subject Junior ISA payments
+The user and client wish to have this deleted from the system. It has been sent from the client.
+declare @SentId int = 2393107,
+@ReceivedId int = 2393114
+
 
 
 --get docusign doc
