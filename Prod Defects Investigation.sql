@@ -61,7 +61,14 @@ Subject Junior ISA payments
 The user and client wish to have this deleted from the system. It has been sent from the client.
 declare @SentId int = 2393107,
 @ReceivedId int = 2393114
+--
+DECLARE @SentSMId INT = 2393107,
+@ReceivedSMId INT = 2393114,
+@TenantId INT = 11882;
 
+SELECT * FROM TSecureMessageRecipient WHERE SecureMessageId IN (@SentSMId, @ReceivedSMId)
+SELECT * FROM TSecureMessage WHERE SecureMessageId IN (@SentSMId, @ReceivedSMId) AND TenantId = @TenantId
+SELECT * FROM TAttachmentDocument WHERE SecureMessageId IN (@SentSMId, @ReceivedSMId)
 
 
 --get docusign doc
