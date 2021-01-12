@@ -62,6 +62,7 @@ The user and client wish to have this deleted from the system. It has been sent 
 declare @SentId int = 2393107,
 @ReceivedId int = 2393114
 --
+USE [securemessage]
 DECLARE @SentSMId INT = 2393107,
 @ReceivedSMId INT = 2393114,
 @TenantId INT = 11882;
@@ -69,6 +70,7 @@ DECLARE @SentSMId INT = 2393107,
 SELECT * FROM TSecureMessageRecipient WHERE SecureMessageId IN (@SentSMId, @ReceivedSMId)
 SELECT * FROM TSecureMessage WHERE SecureMessageId IN (@SentSMId, @ReceivedSMId) AND TenantId = @TenantId
 SELECT * FROM TAttachmentDocument WHERE SecureMessageId IN (@SentSMId, @ReceivedSMId)
+SELECT * FROM TExecutedDataScript WHERE ScriptGUID like '2C913F9A-FEBD-4FEC-8522-E7ABD560649F'
 
 
 --get docusign doc
